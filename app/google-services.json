@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "513469559337",
+    "project_id": "mirammarket",
+    "storage_bucket": "mirammarket.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513469559337:android:0a7cb612ab9d00be33e238",
+        "android_client_info": {
+          "package_name": "com.chelo.miramarket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkspPUc_XtpT4_IC3g3eyyLQNSgtk5SWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

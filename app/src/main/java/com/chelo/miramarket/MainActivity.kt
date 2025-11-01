@@ -4,13 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.chelo.miramarket.presentation.navigation.NavigationWrapper
 import com.chelo.miramarket.ui.theme.MiraMarketTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,9 +14,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val sp = installSplashScreen()
         setContent {
-            MiraMarketTheme {
-
+            MiraMarketTheme(darkTheme = false) {
+                NavigationWrapper()
             }
         }
     }

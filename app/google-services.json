@@ -12,7 +12,12 @@
           "package_name": "com.chelo.miramarket"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "513469559337-t9ai88btmhqjv454i4791kd8opmtdu8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCkspPUc_XtpT4_IC3g3eyyLQNSgtk5SWU"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513469559337-t9ai88btmhqjv454i4791kd8opmtdu8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

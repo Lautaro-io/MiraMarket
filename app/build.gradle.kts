@@ -80,8 +80,11 @@ dependencies {
 
     //HILT
     implementation(libs.hilt.android)
+    implementation(libs.hilt.nav)
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.hilt.compiler)
+
+
     //KAMEL & COIL
     implementation(libs.kamel.image)
     implementation(libs.coil.compose)
@@ -92,6 +95,11 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.play.services.auth)
+
+
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
 
 

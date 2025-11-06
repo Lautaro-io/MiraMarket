@@ -5,7 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.chelo.miramarket.presentation.home.HomeScreen
-import com.chelo.miramarket.presentation.login.LoginScreen
+import com.chelo.miramarket.presentation.login.screen.LoginScreen
 import com.chelo.miramarket.presentation.map.MapScreen
 import com.chelo.miramarket.presentation.splashscreen.SplashScreen
 

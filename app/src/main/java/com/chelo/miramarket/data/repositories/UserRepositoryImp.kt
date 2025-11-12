@@ -8,17 +8,19 @@ import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 
 class UserRepositoryImp @Inject constructor(
-
     private val remote: AuthDataSource,
-): UserRepository {
+) : UserRepository {
 
-    override suspend fun loginWithGoogle(credentials: AuthCredential) : User = remote.loginWithGoogle(credentials).toDomain()
+    override suspend fun loginWithGoogle(credential: AuthCredential): User {
+        val firebaseUser = remote.loginWithGoogle(credential)
+        return firebaseUser.toDomain()
+    }
 
 }
 
 
 private fun FirebaseUser.toDomain() = User(
     id = uid,
-    email = email,
-    name = displayName,
+    email = email ?: "",
+    name = displayName ?: "",
 )

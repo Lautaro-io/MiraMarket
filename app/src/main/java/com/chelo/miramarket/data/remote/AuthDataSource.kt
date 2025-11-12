@@ -14,7 +14,7 @@ class AuthDataSource @Inject constructor(private val auth: FirebaseAuth) {
         return try {
             val result = auth.signInWithCredential(credentials).await()
             result.user ?: throw Exception("User is null")
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             throw e
         }
     }

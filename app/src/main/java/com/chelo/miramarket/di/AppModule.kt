@@ -1,5 +1,6 @@
 package com.chelo.miramarket.di
 
+import com.chelo.miramarket.domain.repositories.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -22,4 +23,8 @@ object AppModule {
     @Singleton
     fun providesFirebaseFirestore() =
         FirebaseFirestore.getInstance()
+
+
+
+
 }

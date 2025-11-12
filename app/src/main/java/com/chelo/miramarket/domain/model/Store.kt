@@ -5,6 +5,7 @@ import com.chelo.miramarket.data.model.StoreDto
 data class Store(
     val id: String,
     val category: Category,
+    val name: String,
     val state: StoreState,
     val description : String ,
     val ubication : String  ,

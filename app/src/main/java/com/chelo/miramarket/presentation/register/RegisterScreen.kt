@@ -100,7 +100,7 @@ fun RegisterScreen(navigate: () -> Unit = {}, onBack:()->Unit = { },registerView
             }
             item {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navigate() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),

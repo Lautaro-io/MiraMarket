@@ -1,21 +1,18 @@
 package com.chelo.miramarket.presentation.home
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +46,9 @@ import com.chelo.miramarket.domain.model.StoreOwner
 import com.chelo.miramarket.domain.model.StoreState
 import com.chelo.miramarket.domain.model.TimeRange
 import com.chelo.miramarket.ui.theme.Background
+import com.chelo.miramarket.ui.theme.OpenSoonStore
+import com.chelo.miramarket.ui.theme.OpenStore
+import com.chelo.miramarket.ui.theme.SplashBackground
 import java.time.LocalTime
 
 val storelist: List<Store> = listOf(
@@ -291,7 +291,7 @@ val storelist: List<Store> = listOf(
 @Composable
 fun HomeScreen(navigateToMap: () -> Unit = {}) {
 
-    var favorites by remember { mutableStateOf(mutableListOf<Store>()) }
+    val favorites = remember { mutableListOf<Store>() }
 
 
     Scaffold(
@@ -327,7 +327,8 @@ fun HomeScreen(navigateToMap: () -> Unit = {}) {
                 modifier = Modifier
                     .padding(32.dp)
                     .size(64.dp),
-                containerColor = Color.Black
+                shape = CircleShape,
+                containerColor = SplashBackground,
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_location),
@@ -376,21 +377,21 @@ fun CardStore(
     isFavorite: Boolean = false,
 ) {
     val timeColor = when (store.state) {
-        StoreState.OPEN -> Color.Green
+        StoreState.OPEN -> OpenStore
         StoreState.CLOSED -> Color.Red
-        StoreState.OPEN_SOON -> Color.Magenta
+        StoreState.OPEN_SOON -> OpenSoonStore
         StoreState.PENDING -> Color.Yellow
     }
     val iconState = when (store.state) {
-        StoreState.OPEN -> R.drawable.open_svg
-        StoreState.CLOSED -> R.drawable.ic_open_soon
+        StoreState.OPEN -> R.drawable.ic_open
+        StoreState.CLOSED -> R.drawable.ic_close
         StoreState.OPEN_SOON -> R.drawable.ic_open_soon
-        StoreState.PENDING -> R.drawable.open_svg
+        StoreState.PENDING -> R.drawable.ic_pending
     }
     val state = when (store.state) {
         StoreState.OPEN -> "Abierto"
         StoreState.CLOSED -> "Cerrado"
-        StoreState.OPEN_SOON -> "Abierto pronto"
+        StoreState.OPEN_SOON -> "Abre a las"
         StoreState.PENDING -> "Pendiente"
     }
     Card(
@@ -418,8 +419,9 @@ fun CardStore(
             AsyncImage(
                 model = store.image,
                 contentDescription = "Imagen de la tienda",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(50.dp)
+                    .wrapContentHeight()
                     .align(Alignment.CenterVertically)
                     .clip(RoundedCornerShape(8.dp)),
             )
@@ -430,7 +432,12 @@ fun CardStore(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(store.name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(
+                    store.name,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
@@ -452,6 +459,7 @@ fun CardStore(
                             painterResource(iconState),
                             contentDescription = "Horario ",
                             modifier = Modifier.size(16.dp)
+                            ,tint = timeColor
                         )
                         Text("$state ${it.start} a ${it.end}", color = timeColor, fontSize = 12.sp)
                     }
@@ -470,7 +478,7 @@ fun FavoriteButton(isFavorite: Boolean, onClick: () -> Unit, modifier: Modifier 
     var isFav by remember { mutableStateOf(false) }
     val bgColor = if (isFav) Color(0xFF29472A) else Color.Transparent
     IconButton(
-        onClick = {isFav = !isFav},
+        onClick = { isFav = !isFav },
         modifier = modifier
             .padding(start = 16.dp, top = 4.dp)
             .size(24.dp),

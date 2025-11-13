@@ -1,27 +1,10 @@
 package com.chelo.miramarket.presentation.register
 
-import android.app.Activity
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.compose.ui.res.stringResource
-import androidx.credentials.CredentialManager
-import androidx.credentials.CustomCredential
-import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.chelo.miramarket.R
-import com.chelo.miramarket.data.repositories.UserRepositoryImp
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,10 +18,49 @@ class RegisterViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
 
+    fun onFieldChange(fieldType: FieldType , value: String){
+        _state.update {
+            when(fieldType){
+                FieldType.STORE_NAME -> it.copy(storeName = value)
+                FieldType.CATEGORY -> it.copy(category = value)
+                FieldType.DESCRIPTION -> it.copy(description = value)
+                FieldType.ADDRESS -> it.copy(address = value)
+                FieldType.OWNER_NAME -> it.copy(ownerName = value)
+                FieldType.PHONE_NUMBER -> it.copy(phoneNumber = value)
+                FieldType.EMAIL -> it.copy(email = value)
+                FieldType.OPENING_TIME -> it.copy(openingTime = value)
+                FieldType.CLOSING_TIME -> it.copy(closingTime = value)
+            }
+        }
+
+
+    }
+
+
 
 
 }
 
+enum class FieldType {
+    STORE_NAME,
+    CATEGORY,
+    DESCRIPTION,
+    ADDRESS,
+    OWNER_NAME,
+    PHONE_NUMBER,
+    EMAIL,
+    OPENING_TIME,
+    CLOSING_TIME
+}
+
 data class RegisterState(
-    val loading: Boolean = false,
+    val storeName: String = "",
+    val category: String = "",
+    val description: String = "",
+    val address: String = "",
+    val ownerName: String = "",
+    val phoneNumber: String = "",
+    val email: String = "",
+    val openingTime: String = "",
+    val closingTime: String = ""
 )

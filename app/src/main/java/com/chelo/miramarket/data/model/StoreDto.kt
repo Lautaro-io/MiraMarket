@@ -4,6 +4,7 @@ package com.chelo.miramarket.data.model
 data class StoreDto(
     val id: String = "",
     val category: String = "",
+    val name : String = "",
     val state: String = "",
     val description: String = "",
     val ubication: String = "",

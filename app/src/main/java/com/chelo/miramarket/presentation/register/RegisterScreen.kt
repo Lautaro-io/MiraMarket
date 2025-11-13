@@ -1,103 +1,371 @@
 package com.chelo.miramarket.presentation.register
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.chelo.miramarket.R
-
-@Composable
-fun RegisterScreen(navigate:()-> Unit = {}){
-    Box(
-        modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)
-        .verticalScroll(rememberScrollState())
-        .padding(horizontal = 24.dp, vertical = 32.dp)
-)
-{
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 48.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceBetween){
-
-        Spacer(modifier = Modifier.height(80.dp))
-
-        Image(painter = painterResource(R.drawable.iconapp_2), contentDescription =  "Icon App", modifier = Modifier.size(100.dp))
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Text("MiraMarket", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.Black)
-        Spacer(modifier = Modifier.height(15.dp))
-
-        Text(text = "¡Descubrí comercios cerca tuyo!", fontSize = 16.sp, color = Color.Gray, textAlign = TextAlign.Center)
-
-        Spacer(modifier = Modifier.height(90.dp))
-        Text(text = "¡Bienvenido!", fontSize = 20.sp, fontWeight = FontWeight.Bold , color = Color.Black, textAlign = TextAlign.Center)
-
-        Spacer(modifier = Modifier.height(15.dp))
-        Text(text = "Inicia sesión para explorar negocios locales y registrar tu comercio", fontSize = 15.sp, color = Color.Gray, textAlign = TextAlign.Center)
-
-        Spacer(modifier = Modifier.height(50.dp))
-
-        OutlinedButton(onClick = { navigate () }, modifier = Modifier.fillMaxWidth().height(56.dp), colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White, contentColor = Color.Black), border = BorderStroke(1.dp,Color.LightGray))
-        {
-            Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)
-
-        {
-            Image(painter = painterResource(id = R.drawable.google_color), contentDescription = "Google Logo", modifier = Modifier.size(24.dp).offset(y = (-1).dp).offset(x = (-35).dp))
-
-            Text("Continuar con Google", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.Black)
-        }
-
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        val annotatedText = buildAnnotatedString {
-            append("Al continuar, aceptas nuestros ")
-
-            withStyle( style = SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline, color = Color.Black)){
-                append("Términos de Servicio y Política de Privacidad")
-
-            }
-        }
-        Text( text = annotatedText,style = MaterialTheme.typography.bodySmall.copy(color = Color.Black) ,textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(top = 24.dp))
-    }
-}
-}
-
+import com.chelo.miramarket.ui.theme.Background
+import com.chelo.miramarket.ui.theme.BackgroundBlack
+import com.chelo.miramarket.ui.theme.FieldBg
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRegisterScreen()
-{
-    RegisterScreen()
+fun RegisterScreen(navigate: () -> Unit = {}, onBack:()->Unit = { },registerViewModel: RegisterViewModel = hiltViewModel()) {
+    val state = registerViewModel.state.collectAsState().value
+
+    BackHandler {
+        onBack()
+    }
+
+    Scaffold(
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(BackgroundBlack)
+                    .padding(horizontal = 16.dp)
+                    .statusBarsPadding()
+                    .navigationBarsPadding(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_arrow_back),
+                    contentDescription = "Back",
+                    tint = Background,
+                    modifier = Modifier.clickable{onBack()}
+                )
+                Column(modifier = Modifier.padding(start = 16.dp)) {
+                    Text(
+                        "Agregar comercio",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        color = Background
+                    )
+                    Text(
+                        "Registra tu negocio",
+                        fontWeight = FontWeight.Light,
+                        fontSize = 16.sp,
+                        color = Color.LightGray
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        LazyColumn(Modifier.padding(innerPadding)) {
+            item {
+                FormStoreInfo(state, registerViewModel)
+            }
+            item {
+                CardUbication(state, registerViewModel)
+            }
+            item {
+                FormOwnerInfo(state, registerViewModel)
+            }
+            item {
+                StoreTime(state, registerViewModel)
+            }
+            item {
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = BackgroundBlack,
+                        contentColor = Background
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                ) { Text("Registrar comercio") }
+            }
+        }
+    }
+}
+
+@Composable
+fun FormStoreInfo(state: RegisterState, registerViewModel: RegisterViewModel) {
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.dp, Color.LightGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Background,
+            contentColor = BackgroundBlack,
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_store),
+                    contentDescription = "Informacion de comercio",
+                    tint = BackgroundBlack
+                )
+                Text("Informacion del negocio", modifier = Modifier.padding(start = 8.dp))
+            }
+            FieldStore(
+                labelText = "Nombre del comercio *",
+                value = state.storeName,
+                onValueChange = { registerViewModel.onFieldChange(FieldType.STORE_NAME, it) },
+                placeHolderText = "Ej : Panaderia el Sol..."
+            )
+            FieldStore(
+                labelText = "Categoria *",
+                value = state.category,
+                onValueChange = { registerViewModel.onFieldChange(FieldType.CATEGORY, it) },
+                placeHolderText = "Seleccione una categoria"
+            )
+            FieldStore(
+                labelText = "Descripcion",
+                value = state.description,
+                onValueChange = { registerViewModel.onFieldChange(FieldType.DESCRIPTION, it) },
+                placeHolderText = "Describe tu negocio..."
+            )
+        }
+    }
+}
+
+@Composable
+fun CardUbication(state: RegisterState, registerViewModel: RegisterViewModel) {
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.dp, Color.LightGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Background,
+            contentColor = BackgroundBlack,
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_location),
+                    contentDescription = "Ubicacion",
+                    tint = BackgroundBlack
+                )
+                Text("Ubicacion", modifier = Modifier.padding(start = 8.dp))
+            }
+            FieldStore(
+                labelText = "Direccion **",
+                value = state.address,
+                onValueChange = { registerViewModel.onFieldChange(FieldType.ADDRESS, it) },
+                placeHolderText = "Ej : Avenida Siempre Viva 123"
+            )
+        }
+    }
+}
+
+@Composable
+fun FormOwnerInfo(state: RegisterState, registerViewModel: RegisterViewModel) {
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.dp, Color.LightGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Background,
+            contentColor = BackgroundBlack,
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_person),
+                    contentDescription = "Datos del titular",
+                    tint = BackgroundBlack
+                )
+                Text("Datos del titular", modifier = Modifier.padding(start = 8.dp))
+            }
+            FieldStore(
+                labelText = "Nombre completo **",
+                value = state.ownerName,
+                onValueChange = { registerViewModel.onFieldChange(FieldType.OWNER_NAME, it) },
+                placeHolderText = "Ej : Juan Perez..."
+            )
+            FieldStore(
+                labelText = "Telefono **",
+                value = state.phoneNumber,
+                onValueChange = { registerViewModel.onFieldChange(FieldType.PHONE_NUMBER, it) },
+                placeHolderText = "Ej : 2291-121212"
+            )
+            FieldStore(
+                labelText = "Email **",
+                value = state.email,
+                onValueChange = { registerViewModel.onFieldChange(FieldType.EMAIL, it) },
+                placeHolderText = "Ej : juanperez@gmail.com"
+            )
+        }
+    }
+}
+
+@Composable
+fun StoreTime(state: RegisterState, registerViewModel: RegisterViewModel) {
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.dp, Color.LightGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Background,
+            contentColor = BackgroundBlack,
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_open_soon),
+                    contentDescription = "Horarios",
+                    tint = BackgroundBlack,
+                    modifier = Modifier.size(24.dp)
+                )
+                Text("Horarios", modifier = Modifier.padding(start = 8.dp))
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                FieldStore(
+                    labelText = "Apertura **",
+                    value = state.openingTime,
+                    onValueChange = { registerViewModel.onFieldChange(FieldType.OPENING_TIME, it) },
+                    placeHolderText = "Ej : -- : --",
+                    modifier = Modifier.weight(1f)
+                )
+                FieldStore(
+                    labelText = "Cierre **",
+                    value = state.closingTime,
+                    onValueChange = { registerViewModel.onFieldChange(FieldType.CLOSING_TIME, it) },
+                    placeHolderText = "Ej : -- : --",
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun FieldStore(
+    modifier: Modifier = Modifier,
+    labelText: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeHolderText: String,
+    isSingleLine: Boolean = true,
+    minLines: Int? = null,
+) {
+    Column(
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = labelText,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = BackgroundBlack,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start
+        )
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = { Text(text = placeHolderText, color = Color.Gray) },
+            shape = RoundedCornerShape(8.dp),
+            singleLine = isSingleLine,
+            minLines = minLines ?: 1,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = BackgroundBlack,
+                unfocusedBorderColor = Color.LightGray,
+                focusedTextColor = BackgroundBlack,
+                unfocusedTextColor = BackgroundBlack,
+                focusedContainerColor = Background,
+                unfocusedContainerColor = FieldBg.copy(alpha = 0.3f),
+
+
+            )
+        )
+    }
 }

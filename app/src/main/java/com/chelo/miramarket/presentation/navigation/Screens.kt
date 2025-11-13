@@ -17,3 +17,7 @@ object Map {
 object Login {
     const val ROUTE = "login"
 }
+
+object Register {
+    const val ROUTE = "register"
+}
